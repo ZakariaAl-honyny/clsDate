@@ -108,7 +108,26 @@ public:
         return clsDate(Day, Month, Year);
     }
 
-    //Another solution Better 
+    static string GetSystemDateTimeString()
+    {
+        //System Date And Time String
+        time_t t = time(0);
+        tm* now = localtime(&t);
+
+        short Day, Month, Year, Hour, Minute, Second;
+
+        Year = now->tm_year + 1900;
+        Month = now->tm_mon + 1;
+        Day = now->tm_mday;
+        Hour = now->tm_hour;
+        Minute = now->tm_min;
+        Second = now->tm_sec;
+
+        return (to_string(Year) + "/" + to_string(Month) + "/" + to_string(Day) 
+            + " - " + to_string(Hour) + ":" + to_string(Minute) + ":" + to_string(Second));
+    }
+
+    //My solution Better 
     static bool IsValidDate(clsDate Date)
     {
         return !((Date.Day < 1 || Date.Day > NumberOfDaysInAMonth(Date.Month, Date.Year)) || (Date.Month < 1 || Date.Month > 12));
@@ -221,7 +240,8 @@ public:
         short NumberOfDays[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
         return ((Month == 2) ? (IsLeapYear(Year) ? 29 : 28) : NumberOfDays[Month - 1]);
-        
+        // if you reach here then its 30 days
+        // return 30;
     }
 
     short NumberOfDaysInAMonth()
@@ -334,7 +354,8 @@ public:
         NumberOfDays = NumberOfDaysInAMonth(Month, Year);
 
         // Print the Current month name
-        printf("\n  ______________%s________________\n", MonthShortName(Month).c_str());
+        printf("\n  ______________%s________________\n",
+            MonthShortName(Month).c_str());
 
         // Print the columns
         printf("\n  Sun  Mon  Tue  Wed  Thr  Fri  Sat\n");
@@ -377,20 +398,20 @@ public:
         return;
     }
 
-   /* void PrintYearCalendar()
-    {
-        printf("\n  _________________________________\n");
-        printf("\n         Calendar - %d", Year);
-        printf("\n  _________________________________\n");
+    /* void PrintYearCalendar()
+     {
+         printf("\n  _________________________________\n");
+         printf("\n         Calendar - %d", Year);
+         printf("\n  _________________________________\n");
 
-        for (short i = 1; i <= 12; i++)
-        {
-            PrintMonthCalendar(i, _Year);
-        }
+         for (short i = 1; i <= 12; i++)
+         {
+             PrintMonthCalendar(i, _Year);
+         }
 
-        return;
-    }*/
-    //or this function the same
+         return;
+     }*/
+     //or this function the same
     void PrintYearCalendar()
     {
         PrintYearCalendar(_Year);
@@ -414,19 +435,19 @@ public:
         return NumberOfDaysFromBegainingOfTheYear(Date.Day, Date.Month, Date.Year);
     }
 
-   /* short NumberOfDaysFromBegainingOfTheYear()
-    {
-        short TotalDays = 0;
-        for (short i = 1; i <= _Month - 1; i++)
-        {
-            TotalDays += NumberOfDaysInAMonth(i, _Year);
-        }
+    /* short NumberOfDaysFromBegainingOfTheYear()
+     {
+         short TotalDays = 0;
+         for (short i = 1; i <= _Month - 1; i++)
+         {
+             TotalDays += NumberOfDaysInAMonth(i, _Year);
+         }
 
-        TotalDays += _Day;
+         TotalDays += _Day;
 
-        return TotalDays;
-    }*/
-    //or this function the same
+         return TotalDays;
+     }*/
+     //or this function the same
     short NumberOfDaysFromBegainingOfTheYear()
     {
         return NumberOfDaysFromBegainingOfTheYear(_Day, _Month, _Year);
@@ -490,7 +511,7 @@ public:
 
         }
 
-        
+
     }
 
     static bool IsDate1BeforeDate2(clsDate Date1, clsDate Date2)
